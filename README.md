@@ -7,31 +7,31 @@ Modern enterprise RAG systems often suffer from architectural fragmentation—re
 
 
 ## System Architecture & Key Components
-####1.  Unstructured Data Ingestion & Governance:
+1.  Unstructured Data Ingestion & Governance:
 
 - Utilized Unity Catalog Volumes (ai_catalog.rag_schema.raw_documents) for secure, audited landing of unstructured enterprise files (PDFs, Markdown, text).
 
 - Implemented a sliding-window text chunker (400-character windows, 40-character overlap) converting unstructured text into structured tabular records.
 
-####2. Streaming Delta Lake Storage with CDF:
+2. Streaming Delta Lake Storage with CDF:
 
 - Stored chunked text into managed Delta tables (ai_catalog.rag_schema.source_docs).
 
 - Configured Change Data Feed (delta.enableChangeDataFeed = true) to track row-level insert, update, and delete events automatically, eliminating costly full-table re-indexing.
 
-####3. Managed Vector Indexing:
+3. Managed Vector Indexing:
 
 - Provisioned a Databricks Vector Search Standard Endpoint paired with a managed Delta Sync index (docs_vector_idx).
 
 - Leveraged built-in embedding pipelines (databricks-bge-large-en), allowing Databricks to manage embedding generation and HNSW indexing without requiring custom vectorization scripts.
 
-####4. Foundation Model Integration & Multi-Turn Reasoning:
+4. Foundation Model Integration & Multi-Turn Reasoning:
 
 - Integrated pre-provisioned foundation model endpoints running Meta Llama 3 via the Databricks Workspace Client.
 
 - Constructed conversational grounding prompts that constrain model completions strictly to context retrieved from the lakehouse, complete with conversation history management for contextual multi-turn Q&A.
 
-####5. Model Registry & Serverless Serving:
+5. Model Registry & Serverless Serving:
 
 - Packaged the retrieval engine into an MLflow custom pyfunc model utilizing models-from-code logging patterns to eliminate unpickleable network client references.
 
