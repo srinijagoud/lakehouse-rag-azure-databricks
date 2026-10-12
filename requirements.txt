@@ -1,0 +1,6 @@
+databricks-sdk>=0.20.0
+databricks-vectorsearch>=0.66
+mlflow>=2.11.0
+pypdf>=4.0.0
+pandas>=2.0.0
+pyspark
